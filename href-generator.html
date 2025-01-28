@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hyperlink Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #121212;
+        color: #e0e0e0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+    .container {
+        max-width: 1000px;
+        width: 100%;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    h1 {
+        color: #48749b;
+        text-align: left;
+    }
+    form {
+        background: #1e1e1e;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+    }
+    label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 4px;
+        border: 1px solid #333;
+        background-color: #2c2c2c;
+        color: #e0e0e0;
+        font-family: monospace;
+        box-sizing: border-box;
+    }
+    .form-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 20px;
+    }
+    .radio-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .radio-group label {
+        font-weight: normal;
+        margin-right: 10px;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #29374b;
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        align-self: flex-start;
+    }
+    button:hover {
+        background-color: #6591c0;
+    }
+    @media (max-width: 600px) {
+        .form-actions {
+            align-items: flex-start;
+        }
+        .radio-group {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .radio-group label {
+            margin-bottom: 5px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Hyperlink Generator</h1>
+
+    <form>
+        <label for="input">Text input::</label>
+        <textarea id="input" name="input" rows="15">
+        [Example: Link Text]
+        [Example: Link URL]
+        September 2025: The Future of the Web
+        https://example.com/september-2025
+    </textarea>
+
+        <div class="form-actions">
+            <div class="radio-group">
+                <label>Output links as a list?</label>
+                <label><input type="radio" name="useList" value="yes" checked> Yes</label>
+                <label><input type="radio" name="useList" value="no"> No</label>
+            </div>
+            <button type="button" onclick="generateLinks()">Generate Links</button>
+
+        </div>
+
+        <label for="output">HTML output:</label>
+        <textarea id="output" name="output" rows="20" readonly></textarea>
+    </form>
+</div>
+
+<script>
+function generateLinks() {
+    const inputText = document.getElementById("input").value;
+    const output = document.getElementById("output");
+    const useList = document.querySelector('input[name="useList"]:checked').value === 'yes';
+
+    // Split the input text into an array of lines
+    const lines = inputText.split('\n');
+
+    let outputText = "";
+
+    for (let i = 0; i < lines.length; i += 2) {
+        const title = lines[i].trim();
+        const url = lines[i + 1] ? lines[i + 1].trim() : '';
+
+        if (!url) continue;
+
+        if (useList) {
+            outputText += "<li><a href=\"" + url + "\" target=\"_blank\">" + title + "</a></li>\n";
+        } else {
+            outputText += "<a href=\"" + url + "\" target=\"_blank\">" + title + "</a>\n";
+        }
+    }
+
+    if (useList) {
+        outputText = "<ul>\n" + outputText + "</ul>";
+    }
+
+    output.value = outputText;
+}
+</script>
+
+</body>
+</html>
